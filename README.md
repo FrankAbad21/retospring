@@ -31,18 +31,32 @@ password:
 
 Acceso a la UI de la documentación de la API mediante URL:
 ```sh
-url: http://localhost:8080/hotel-softtek/swagger-ui/index.html#/
+url: http://localhost:8080/reto/swagger-ui/index.html
 ```
 ![img_1.png](img_1.png)
 
 ## Uso en Postman
+
+
+### POST (Login)
+```sh
+http://localhost:8080/reto/auth/log-in
+```
+Hay que insertar un JSON para esta petición.
+Usuario de prueba admin:
+``` json
+{
+  "username": "admin@reto.com",
+  "password": "1234"
+}
+```
 
 ### GET
 ```sh
 http://localhost:8080/reto/api/v1/user
 ```
 
-### POST (crear Huesped)
+### POST (crear User)
 ```sh
 http://localhost:8080/reto/api/v1/user
 ```
