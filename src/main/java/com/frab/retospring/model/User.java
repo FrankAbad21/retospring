@@ -10,9 +10,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Builder
@@ -27,6 +25,8 @@ public class User {
     private UUID uuid;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
     private String password;
 
@@ -38,5 +38,18 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Phone> phones = new ArrayList<>();
+
+    @Column(name = "account_No_Expired")
+    private boolean accountNoExpired;
+
+    @Column(name = "account_No_Locked")
+    private boolean accountNoLocked;
+
+    @Column(name = "credential_No_Expired")
+    private boolean credentialNoExpired;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_uuid"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleEntity> roles = new HashSet<>();
 
 }
