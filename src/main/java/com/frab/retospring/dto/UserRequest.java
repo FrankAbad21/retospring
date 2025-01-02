@@ -1,5 +1,6 @@
 package com.frab.retospring.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.frab.retospring.model.Phone;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,6 +16,7 @@ import java.util.List;
 @Setter
 public class UserRequest {
 
+    @JsonIgnore
     @Value("${app.email.regexp}")
     private String regexpEmail;
 
