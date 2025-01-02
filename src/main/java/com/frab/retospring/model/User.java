@@ -33,6 +33,8 @@ public class User {
     private LocalDateTime created;
     private LocalDateTime modified;
     private LocalDateTime lastLogin;
+
+    @Column(length = 500)
     private String token;
     private boolean active;
 

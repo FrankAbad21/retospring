@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,16 +36,22 @@ public class UserDetailServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) {
         // username para mi es email
-        User userEntity = userRepository.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + " no existe."));
+        User userEntity = userRepository.findUserByEmail(username).orElseThrow(() ->
+                new UsernameNotFoundException("El usuario " + username + " no existe."));
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
-        userEntity.getRoles().forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
+        userEntity.getRoles().forEach(role -> authorityList
+                .add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
 
-        userEntity.getRoles().stream().flatMap(role -> role.getPermissionList().stream()).forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
+        userEntity.getRoles().stream().flatMap(role -> role.getPermissionList()
+                .stream()).forEach(permission -> authorityList
+                .add(new SimpleGrantedAuthority(permission.getName())));
 
 
-        return new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getPassword(), userEntity.isActive(), userEntity.isAccountNoExpired(), userEntity.isCredentialNoExpired(), userEntity.isAccountNoLocked(), authorityList);
+        return new org.springframework.security.core.userdetails.User(userEntity.getEmail(),
+                userEntity.getPassword(), userEntity.isActive(), userEntity.isAccountNoExpired(),
+                userEntity.isCredentialNoExpired(), userEntity.isAccountNoLocked(), authorityList);
     }
 
     public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
@@ -56,7 +63,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.createToken(authentication);
-        AuthResponse authResponse = new AuthResponse(username, "User loged succesfully", accessToken, true);
+        User user = userRepository.findUserByEmail(username)
+                .orElseThrow(() -> new BadCredentialsException("Error al actualizar el Usuario"));
+        user.setToken(accessToken);
+        LocalDateTime ahora = LocalDateTime.now();
+        user.setModified(ahora);
+        user.setLastLogin(ahora);
+        userRepository.save(user);
+        AuthResponse authResponse = new AuthResponse(username, "User loged succesfully",
+                accessToken, true);
         return authResponse;
     }
 
