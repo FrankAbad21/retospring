@@ -1,5 +1,7 @@
 # Documentación de API Rest Creacion de Usuario v1.0.0
 ## Descripción del proyecto
+Diagrama de arquitectura del API de creacion de usuario protegido con Spring Security
+![arquitectura.png](arquitectura.png)
 
 Este proyecto implementa un API para creacion de Usuario. Ese endpoint deberá recibir un usuario con los campos "nombre", "correo", "contraseña",
 más un listado de objetos "teléfono", el diagrama de base de datos queda de la siguiente manera.
@@ -50,7 +52,7 @@ Usuario de prueba admin:
   "password": "1234"
 }
 ```
-
+El API de Login devuelve el jwt que debe ser adicionado como "Bearer Token" para los demas endpoints.
 ### GET
 ```sh
 http://localhost:8080/reto/api/v1/user
@@ -123,6 +125,7 @@ Obtenemos como salida los datos del usuario donde se ve el ultimo token y la ult
 ```
 En el proyecto encontraras la coleccion de Postman retoSpring.postman_collection.json
 
+El proyecto fue trabajado con gitflow multiples commit para hacer incrementos de valor en cada commit.
 
 Añadir SpringDoc: https://springdoc.org/#getting-started
 
