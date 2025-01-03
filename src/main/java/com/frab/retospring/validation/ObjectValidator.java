@@ -26,8 +26,9 @@ public class ObjectValidator {
             return object;
         }
         else {
-            String message = errors.stream().map(err -> err.getMessage()).collect(Collectors.joining(", "));
-            throw new RequestException( message, HttpStatus.BAD_REQUEST.toString());
+            String message = errors.stream().map(err ->
+                    err.getMessage()).collect(Collectors.joining(", "));
+            throw new RequestException( message);
         }
     }
 

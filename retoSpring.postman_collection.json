@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "ce9d383b-352b-4329-8e5e-74e6dd87be81",
+		"name": "retoSpring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7748928"
+	},
+	"item": [
+		{
+			"name": "crear User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkByZXRvLmNvbSIsIm5iZiI6MTczNTg4MTI4MCwiaXNzIjoiQVVUSDBKV1QtQkFDS0VORCIsImV4cCI6MTczNTg4MzA4MCwiaWF0IjoxNzM1ODgxMjgwLCJhdXRob3JpdGllcyI6IkNSRUFURV9VU0VSLElOVkFMSURfVVNFUixSRUFEX1VTRVIsUk9MRV9BRE1JTiIsImp0aSI6IjM3MWI4NzFiLWIxMjUtNDBhOS05NWFhLTdlNjc5YjBjOGVmZiJ9.wemyrGWk82vF9NXcAWSBLUSs6-iQ1neqO3-35XHcFA8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"name\": \"Frank Abad\",\r\n\t\"email\": \"frank@abad.com\",\r\n\t\"password\": \"qwerty2024\",\r\n\t\"phones\": [{\r\n        \"number\": \"1234567\",\r\n\t\t\"citycode\": \"1\",\r\n\t\t\"contrycode\": \"57\"\r\n    }]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reto/api/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reto",
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin@reto.com\",\r\n  \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reto/auth/log-in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reto",
+						"auth",
+						"log-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login Usuario Creado",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"frank@abad.com\",\r\n  \"password\": \"qwerty2024\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/reto/auth/log-in",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reto",
+						"auth",
+						"log-in"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkByZXRvLmNvbSIsIm5iZiI6MTczNTg4MTI4MCwiaXNzIjoiQVVUSDBKV1QtQkFDS0VORCIsImV4cCI6MTczNTg4MzA4MCwiaWF0IjoxNzM1ODgxMjgwLCJhdXRob3JpdGllcyI6IkNSRUFURV9VU0VSLElOVkFMSURfVVNFUixSRUFEX1VTRVIsUk9MRV9BRE1JTiIsImp0aSI6IjM3MWI4NzFiLWIxMjUtNDBhOS05NWFhLTdlNjc5YjBjOGVmZiJ9.wemyrGWk82vF9NXcAWSBLUSs6-iQ1neqO3-35XHcFA8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/reto/api/v1/user/frank@abad.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reto",
+						"api",
+						"v1",
+						"user",
+						"frank@abad.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Listar All User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkByZXRvLmNvbSIsIm5iZiI6MTczNTg4MTI4MCwiaXNzIjoiQVVUSDBKV1QtQkFDS0VORCIsImV4cCI6MTczNTg4MzA4MCwiaWF0IjoxNzM1ODgxMjgwLCJhdXRob3JpdGllcyI6IkNSRUFURV9VU0VSLElOVkFMSURfVVNFUixSRUFEX1VTRVIsUk9MRV9BRE1JTiIsImp0aSI6IjM3MWI4NzFiLWIxMjUtNDBhOS05NWFhLTdlNjc5YjBjOGVmZiJ9.wemyrGWk82vF9NXcAWSBLUSs6-iQ1neqO3-35XHcFA8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/reto/api/v1/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"reto",
+						"api",
+						"v1",
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
