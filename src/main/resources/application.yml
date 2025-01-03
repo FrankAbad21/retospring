@@ -23,6 +23,8 @@ springdoc:
 app:
   email:
     regexp: ^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$
+  password:
+    regexp:
 security:
   jwt:
     key:

@@ -1,5 +1,6 @@
 package com.frab.retospring.exception.advice;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.frab.retospring.dto.ErrorDTO;
 import com.frab.retospring.exception.exception.RequestException;
 import com.frab.retospring.exception.exception.UserNotFoundException;
@@ -15,31 +16,30 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
-    private Map<String, Object> errorMap = new HashMap<>();
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> userNotFound(UserNotFoundException exception){
-        errorMap.put("Status", "Error");
-        errorMap.put("Message", exception.getMessage());
-        errorMap.put("Code", HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity(errorMap, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorDTO> userNotFound(UserNotFoundException exception){
+        return new ResponseEntity(ErrorDTO.builder().message(exception.getMessage()).build(),
+                HttpStatus.NOT_FOUND);
     }
 
 
-    @ExceptionHandler(value = RequestException.class)
+    @ExceptionHandler(RequestException.class)
     public ResponseEntity<ErrorDTO> runtimeExceptionHandler(RequestException ex) {
-        ErrorDTO error = ErrorDTO.builder().code("500").message(ex.getMessage()).build();
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(ErrorDTO.builder().message(ex.getMessage()).build(),
+                HttpStatus.BAD_REQUEST);
     }
 
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<Map<String, Object>> badCredentials(BadCredentialsException exception){
-        errorMap.put("Status", "Error");
-        errorMap.put("Message", exception.getMessage());
-        errorMap.put("Code", HttpStatus.NOT_FOUND);
+    public ResponseEntity<ErrorDTO> badCredentials(BadCredentialsException exception){
+        return new ResponseEntity(ErrorDTO.builder().message(exception.getMessage()).build(),
+                HttpStatus.BAD_REQUEST);
+    }
 
-        return new ResponseEntity(errorMap, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(JWTVerificationException.class)
+    public ResponseEntity<ErrorDTO> jwtVerificationException(JWTVerificationException exception){
+        return new ResponseEntity(ErrorDTO.builder().message(exception.getMessage()).build(),
+                HttpStatus.UNAUTHORIZED);
     }
 }

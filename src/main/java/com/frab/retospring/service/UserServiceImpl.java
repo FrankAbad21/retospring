@@ -1,9 +1,13 @@
 package com.frab.retospring.service;
 
+import com.frab.retospring.constants.ErrorConstant;
+import com.frab.retospring.dto.UserGetResponse;
 import com.frab.retospring.dto.UserRequest;
 import com.frab.retospring.dto.UserResponse;
 import com.frab.retospring.exception.exception.RequestException;
 import com.frab.retospring.mapper.UserMapper;
+import com.frab.retospring.model.PermissionEntity;
+import com.frab.retospring.model.RoleEntity;
 import com.frab.retospring.model.RoleEnum;
 import com.frab.retospring.model.User;
 import com.frab.retospring.repository.RoleRepository;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +35,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse create(UserRequest userRequest) {
         User UserforEmail = userRepository.getByEmail(userRequest.getEmail());
-        if(UserforEmail != null) throw new RequestException("El email ya existe", "P400");
+        if(UserforEmail != null) throw new RequestException(ErrorConstant.EMAIL_EXISTS);
         //Realiza el encriptado
         userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         User user = UserMapper.UserRequestToUser(userRequest);
@@ -46,21 +51,43 @@ public class UserServiceImpl implements UserService {
 
     private void mockRoleForUser(User user) {
 
-        user.setRoles(Set.of(roleRepository.findByRoleEnum(RoleEnum.ADMIN)));
+        user.setRoles(Set.of(roleRepository.findByRoleEnum(RoleEnum.ADMIN)
+                .orElse(mockRoleAdmin())));
         user.setAccountNoLocked(true);
         user.setAccountNoExpired(true);
         user.setCredentialNoExpired(true);
 
     }
 
-    @Override
-    public UserResponse getByEmail(String email) {
-        return UserMapper.UserToUserResponse(userRepository.findUserByEmail(email).orElseThrow());
+    private RoleEntity mockRoleAdmin() {
+        PermissionEntity readUser = PermissionEntity.builder()
+                .name("READ_USER")
+                .build();
+
+
+        PermissionEntity createUser = PermissionEntity.builder()
+                .name("CREATE_USER")
+                .build();
+
+        PermissionEntity invalidUser = PermissionEntity.builder()
+                .name("INVALID_USER")
+                .build();
+
+        /* CREATE ROLES */
+        return RoleEntity.builder()
+                .roleEnum(RoleEnum.ADMIN)
+                .permissionList(Set.of(readUser, createUser, invalidUser))
+                .build();
     }
 
     @Override
-    public List<UserResponse> getAll() {
-        return userRepository.findAll().stream().map(UserMapper::UserToUserResponse).collect(Collectors.toList());
+    public UserGetResponse getByEmail(String email) {
+        return UserMapper.UserToUserGetResponse(userRepository.findUserByEmail(email).orElseThrow());
+    }
+
+    @Override
+    public List<UserGetResponse> getAll() {
+        return userRepository.findAll().stream().map(UserMapper::UserToUserGetResponse).collect(Collectors.toList());
     }
 
 

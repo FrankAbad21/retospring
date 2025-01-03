@@ -41,6 +41,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Phone> phones = new ArrayList<>();
 
+    // ***** Atributos usados para spring security *******
     @Column(name = "account_No_Expired")
     private boolean accountNoExpired;
 
